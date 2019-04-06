@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/quiz/")
+@RequestMapping("/api/quizzes/")
 public class QuestionController extends BaseAPIController {
 
     private QuestionRepository questionRepository;
@@ -23,7 +23,7 @@ public class QuestionController extends BaseAPIController {
         this.questionRepository = questionRepository;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{id}/questions")
     public ResponseEntity<List<QuestionDTO>> getQuestionsByQuizId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(questionRepository.findAllByQuiz_Id(id)
                 .stream()
