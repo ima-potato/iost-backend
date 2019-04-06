@@ -1,24 +1,24 @@
 package com.confetti.demo.dto;
 
-import com.confetti.demo.model.Question;
+import com.confetti.demo.model.Choice;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
 public class QuizDTO {
 
     private String quizName;
     private LocalDateTime startDateTime;
-    private List<Question> questions;
+    private Map<String, Choice> hashedQuestions;
     private BigDecimal prizePool;
     private String sponsor;
     private String status;
 
-    public QuizDTO(String quizName, LocalDateTime startDateTime, List<Question> questions, BigDecimal prizePool, String sponsor, String status) {
+    public QuizDTO(String quizName, LocalDateTime startDateTime, Map<String,Choice> questions, BigDecimal prizePool, String sponsor, String status) {
         this.quizName = quizName;
         this.startDateTime = startDateTime;
-        this.questions = questions;
+        this.hashedQuestions = questions;
         this.prizePool = prizePool;
         this.sponsor = sponsor;
         this.status = status;
@@ -43,12 +43,12 @@ public class QuizDTO {
         this.startDateTime = startDateTime;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
+    public Map<String, Choice> getHashedQuestions() {
+        return hashedQuestions;
     }
 
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+    public void setHashedQuestions(Map<String, Choice> hashedQuestions) {
+        this.hashedQuestions = hashedQuestions;
     }
 
     public BigDecimal getPrizePool() {

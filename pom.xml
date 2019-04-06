@@ -59,6 +59,18 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.60</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.github.qyvlik/io.iost-java-sdk -->
+        <dependency>
+            <groupId>io.github.qyvlik</groupId>
+            <artifactId>io.iost-java-sdk</artifactId>
+            <version>broker-v3.0.6</version>
+        </dependency>
 
     </dependencies>
 
