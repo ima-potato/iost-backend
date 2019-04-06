@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/quizzes")
-public class QuizController {
+public class QuizController extends BaseAPIController{
     private QuizService quizService;
     private IOSTService iostService;
 

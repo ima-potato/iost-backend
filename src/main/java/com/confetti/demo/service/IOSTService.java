@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class IOSTService {
-    private static final String CONTRACT_ID = "ContractHQP1nTV7dHN6X8H7v5pDwxTgDjBYvQ68HP8eJxquNnXh";
+    private static final String CONTRACT_ID = "Contract3xudkxTeDGJQaqG8empbxroyML9D9MtWvMzJ6LzuCPE3";
     private Client client;
     private IOST iost;
     private Keychain account;
