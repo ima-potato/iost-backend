@@ -40,10 +40,19 @@ public class QuestionController extends BaseAPIController {
         );
     }
 
-    @PostMapping("{quizId}/questions/{questionNumber}")
+    @GetMapping("{quizId}/questions/{questionNumber}")
     public ResponseEntity<Integer> answerQuestion(@PathVariable("quizId") Long quizId,
-                                                  @PathVariable("questionNumber") Long questionNumber,
-                                                  @RequestBody AnswerDTO answerDTO) {
+                                                  @PathVariable("questionNumber") Long questionNumber) {
+        Question question = questionRepository.findAllByQuiz_IdAndQuestionNumber(quizId, questionNumber.intValue());
+        List<Choice> correctChoiceList = choiceRepository.findAllByQuestion_IdAndCorrectIsTrue(question.getId());
+        Choice correctChoice = correctChoiceList.get(0);
+        return ResponseEntity.ok(correctChoice.getId().intValue());
+    }
+
+    @PostMapping("{quizId}/questions/{questionNumber}")
+    public ResponseEntity<Void> answerQuestion(@PathVariable("quizId") Long quizId,
+                                               @PathVariable("questionNumber") Long questionNumber,
+                                               @RequestBody AnswerDTO answerDTO) {
         Question question = questionRepository.findAllByQuiz_IdAndQuestionNumber(quizId, questionNumber.intValue());
         List<Choice> correctChoiceList = choiceRepository.findAllByQuestion_IdAndCorrectIsTrue(question.getId());
         Choice correctChoice = correctChoiceList.get(0);
@@ -52,7 +61,7 @@ public class QuestionController extends BaseAPIController {
             // TODO CALL SAVE TO BLOCK CHAIN
         }
 
-        return ResponseEntity.ok(correctChoice.getId().intValue());
+        return ResponseEntity.ok(null);
     }
 
 }
