@@ -40,9 +40,16 @@ public class QuizController extends BaseAPIController{
 
         List<Question> questions = quiz.getQuestions();
 
-        for(Question question: questions ) {
+        for(int i = 0; i < questions.size(); i++) {
+            Integer questionNumber = i + 1;
+
+            Question question = questions.get(i);
+
             List<Choice> choices = question.getChoices();
-            for(Choice choice: choices) {
+
+            question.setQuestionNumber(questionNumber);
+
+            for (Choice choice : choices) {
                 choice.setQuestion(question);
             }
             question.setQuiz(quiz);
