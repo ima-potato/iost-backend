@@ -1,14 +1,14 @@
 package com.confetti.demo.controller;
 
+import com.confetti.demo.controller.dto.AnswerDTO;
 import com.confetti.demo.controller.dto.ChoiceDTO;
 import com.confetti.demo.controller.dto.QuestionDTO;
+import com.confetti.demo.model.Choice;
 import com.confetti.demo.model.Question;
+import com.confetti.demo.repository.ChoiceRepository;
 import com.confetti.demo.repository.QuestionRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +18,12 @@ import java.util.stream.Collectors;
 public class QuestionController extends BaseAPIController {
 
     private QuestionRepository questionRepository;
+    private ChoiceRepository choiceRepository;
 
-    public QuestionController(QuestionRepository questionRepository) {
+    public QuestionController(QuestionRepository questionRepository,
+                              ChoiceRepository choiceRepository) {
         this.questionRepository = questionRepository;
+        this.choiceRepository = choiceRepository;
     }
 
     @GetMapping("{id}/questions")
@@ -35,6 +38,21 @@ public class QuestionController extends BaseAPIController {
                                 .collect(Collectors.toList())))
                 .collect(Collectors.toList())
         );
+    }
+
+    @PostMapping("{quizId}/questions/{questionNumber}")
+    public ResponseEntity<Integer> answerQuestion(@PathVariable("quizId") Long quizId,
+                                                  @PathVariable("questionNumber") Long questionNumber,
+                                                  @RequestBody AnswerDTO answerDTO) {
+        Question question = questionRepository.findAllByQuiz_IdAndQuestionNumber(quizId, questionNumber.intValue());
+        List<Choice> correctChoiceList = choiceRepository.findAllByQuestion_IdAndCorrectIsTrue(question.getId());
+        Choice correctChoice = correctChoiceList.get(0);
+
+        if (answerDTO.getChoiceId() == correctChoice.getId().intValue()) {
+            // TODO CALL SAVE TO BLOCK CHAIN
+        }
+
+        return ResponseEntity.ok(correctChoice.getId().intValue());
     }
 
 }
