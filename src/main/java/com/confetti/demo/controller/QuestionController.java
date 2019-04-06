@@ -7,6 +7,7 @@ import com.confetti.demo.model.Choice;
 import com.confetti.demo.model.Question;
 import com.confetti.demo.repository.ChoiceRepository;
 import com.confetti.demo.repository.QuestionRepository;
+import com.confetti.demo.service.IOSTService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,14 @@ public class QuestionController extends BaseAPIController {
 
     private QuestionRepository questionRepository;
     private ChoiceRepository choiceRepository;
+    private IOSTService iostService;
 
     public QuestionController(QuestionRepository questionRepository,
-                              ChoiceRepository choiceRepository) {
+                              ChoiceRepository choiceRepository,
+                              IOSTService iostService) {
         this.questionRepository = questionRepository;
         this.choiceRepository = choiceRepository;
+        this.iostService = iostService;
     }
 
     @GetMapping("{id}/questions")
@@ -41,8 +45,8 @@ public class QuestionController extends BaseAPIController {
     }
 
     @GetMapping("{quizId}/questions/{questionNumber}")
-    public ResponseEntity<Integer> answerQuestion(@PathVariable("quizId") Long quizId,
-                                                  @PathVariable("questionNumber") Long questionNumber) {
+    public ResponseEntity<Integer> getAnswer(@PathVariable("quizId") Long quizId,
+                                             @PathVariable("questionNumber") Long questionNumber) {
         Question question = questionRepository.findAllByQuiz_IdAndQuestionNumber(quizId, questionNumber.intValue());
         List<Choice> correctChoiceList = choiceRepository.findAllByQuestion_IdAndCorrectIsTrue(question.getId());
         Choice correctChoice = correctChoiceList.get(0);
@@ -58,7 +62,7 @@ public class QuestionController extends BaseAPIController {
         Choice correctChoice = correctChoiceList.get(0);
 
         if (answerDTO.getChoiceId() == correctChoice.getId().intValue()) {
-            // TODO CALL SAVE TO BLOCK CHAIN
+            iostService.recordCorrectAnswer(question, answerDTO.getAccountName());
         }
 
         return ResponseEntity.ok(null);

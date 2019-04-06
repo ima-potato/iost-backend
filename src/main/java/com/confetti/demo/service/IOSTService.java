@@ -84,6 +84,23 @@ public class IOSTService {
         }
     }
 
+    public void recordCorrectAnswer(Question question, String accountName) {
+        Choice correctChoice = question.getChoices().stream()
+                .filter(Choice::isCorrect)
+                .collect(Collectors.toList()).get(0);
+
+        Transaction tx = iost.callABI(CONTRACT_ID,
+                "recordCorrectAnswer",
+                question.getQuiz().getId(),
+                question.getQuestionNumber(),
+                hashString(question.getQuestion()),
+                hashString(correctChoice.getDescription()),
+                accountName);
+
+        account.publish(tx);
+        this.sendTxAndPrint(tx);
+    }
+
     private String hashString(String input) {
         MessageDigest digest = null;
         try {
