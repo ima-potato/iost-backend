@@ -6,6 +6,7 @@ import com.confetti.demo.model.Quiz;
 import com.confetti.demo.service.IOSTService;
 import com.confetti.demo.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,18 @@ public class QuizController {
         return quizService.findAllByStatus("PENDING");
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity<Boolean> markQuizFinished(@PathVariable("id") Long quizId) {
+        Quiz quiz = quizService.findById(quizId);
+        if (!"finished".equals(quiz.getStatus())) {
+            quiz.setStatus("finished");
+            quizService.save(quiz);
+            iostService.markQuizFinished(quizId);
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
+    }
+
     @PostMapping("")
     public Quiz save(@RequestBody Quiz quiz) {
         List<Question> questions = quiz.getQuestions();
@@ -39,7 +52,7 @@ public class QuizController {
             }
             question.setQuiz(quiz);
         }
-
+        quiz.setStatus("pending");
         quiz.setQuestions(questions);
         Quiz savedQuiz = quizService.save(quiz);
 

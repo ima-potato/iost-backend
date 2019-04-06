@@ -26,6 +26,10 @@ public class QuizService {
         return quizRepository.findAllByStatusOrderByStartDateTime(status);
     }
 
+    public Quiz findById(Long id) {
+        return quizRepository.getOne(id);
+    }
+
     public Quiz save(Quiz quiz) {
         return quizRepository.save(quiz);
     }

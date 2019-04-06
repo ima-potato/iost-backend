@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class IOSTService {
-    private static final String CONTRACT_ID = "ContractAimpWmcZ7LNiEmSXCktGGtAhRyAwuSjdC3WSeyJeykio";
+    private static final String CONTRACT_ID = "ContractHQP1nTV7dHN6X8H7v5pDwxTgDjBYvQ68HP8eJxquNnXh";
     private Client client;
     private IOST iost;
     private Keychain account;
@@ -97,6 +97,14 @@ public class IOSTService {
                 hashString(correctChoice.getDescription()),
                 accountName);
 
+        account.publish(tx);
+        this.sendTxAndPrint(tx);
+    }
+
+    public void markQuizFinished(Long quizId) {
+        Transaction tx = iost.callABI(CONTRACT_ID,
+                "markQuizFinished",
+                quizId);
         account.publish(tx);
         this.sendTxAndPrint(tx);
     }

@@ -49,8 +49,6 @@ public class Quiz {
         this.status = status;
     }
 
-
-
     public Quiz() {
     }
 
