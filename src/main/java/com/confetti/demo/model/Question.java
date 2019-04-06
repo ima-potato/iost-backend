@@ -89,5 +89,11 @@ public class Question {
         this.quiz = quiz;
     }
 
+    public Integer getQuestionNumber() {
+        return questionNumber;
+    }
 
+    public void setQuestionNumber(Integer questionNumber) {
+        this.questionNumber = questionNumber;
+    }
 }
