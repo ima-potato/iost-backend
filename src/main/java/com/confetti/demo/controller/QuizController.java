@@ -45,11 +45,14 @@ public class QuizController extends BaseAPIController{
     public Quiz save(@RequestBody Quiz quiz) {
         List<Question> questions = quiz.getQuestions();
 
+        int i = 1;
         for (Question question : questions) {
             List<Choice> choices = question.getChoices();
             for (Choice choice : choices) {
                 choice.setQuestion(question);
             }
+            question.setQuestionNumber(i);
+            i++;
             question.setQuiz(quiz);
         }
         quiz.setStatus("pending");
